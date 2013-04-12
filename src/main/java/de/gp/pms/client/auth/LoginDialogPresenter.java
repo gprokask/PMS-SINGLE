@@ -13,6 +13,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.HasSelectHandlers;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import de.gp.pms.client.Messages;
+import de.gp.pms.client.auth.event.LoginEvent;
 import de.gp.pms.shared.auth.IAuthServiceAsync;
 
 public class LoginDialogPresenter extends WidgetPresenter<LoginDialogView> {
@@ -57,8 +58,9 @@ public class LoginDialogPresenter extends WidgetPresenter<LoginDialogView> {
 
 								@Override
 								public void onSuccess(Void result) {
+									eventBus.fireEvent(new LoginEvent());
+									display.hide();
 								}
-
 							});
 				}
 			}
