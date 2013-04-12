@@ -3,11 +3,11 @@ package de.gp.pms.shared.auth;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.gp.pms.shared.domain.auth.User;
-
 public interface IAuthServiceAsync {
 
 	void isAuthenticated(AsyncCallback<java.lang.Boolean> callback);
+	
+	void login(String userid, String p_password, AsyncCallback<Void> callback);
 	
 	/**
      * Utility class to get the RPC Async interface from client-side code

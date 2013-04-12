@@ -11,6 +11,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.HasSelectHandlers;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.MaxLengthValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
 import de.gp.pms.client.ViewLabels;
@@ -32,11 +33,12 @@ public class LoginDialogView extends Dialog implements LoginDialogPresenter.Disp
     private void initComponents() {
         userid = new TextField();
         userid.setValue("");
-        userid.addValidator(new MinLengthValidator(1));
+        userid.addValidator(new MinLengthValidator(4));
+        userid.addValidator(new MaxLengthValidator(8));
         
         password = new PasswordField();
         password.setValue("");
-        password.addValidator(new MinLengthValidator(1));
+        password.addValidator(new MinLengthValidator(4));
         
         loginButton = new TextButton(labels.login_button());
         errorLabel = new Label();
@@ -81,6 +83,11 @@ public class LoginDialogView extends Dialog implements LoginDialogPresenter.Disp
 	@Override
 	public HasText getErrorValue() {
 		return errorLabel;
+	}
+
+	@Override
+	public boolean validate() {
+		return userid.validate() & password.validate();
 	}
 
 }
