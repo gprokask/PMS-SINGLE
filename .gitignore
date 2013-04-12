@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse files and folders #
+.settings/
+.project
+.classpath
+
+# generated artefacts #
+target/

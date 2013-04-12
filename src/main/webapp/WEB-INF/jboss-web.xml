@@ -1,0 +1,5 @@
+<jboss-web>
+	<context-root>pms</context-root>
+	<security-domain>other</security-domain>
+	<use-jboss-authorization>true</use-jboss-authorization>
+</jboss-web>
