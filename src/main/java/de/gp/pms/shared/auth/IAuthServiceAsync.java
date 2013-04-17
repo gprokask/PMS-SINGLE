@@ -9,6 +9,8 @@ public interface IAuthServiceAsync {
 	
 	void login(String userid, String p_password, AsyncCallback<Void> callback);
 	
+	void logout(AsyncCallback<Void> callback);
+	
 	/**
      * Utility class to get the RPC Async interface from client-side code
      */
@@ -26,4 +28,5 @@ public interface IAuthServiceAsync {
             // Utility class should not be instanciated
         }
     }
+
 }

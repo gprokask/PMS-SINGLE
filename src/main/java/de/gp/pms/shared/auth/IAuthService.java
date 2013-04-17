@@ -9,5 +9,7 @@ public interface IAuthService extends RemoteService {
 	boolean isAuthenticated();
 
 	void login(String userid, String password) throws AuthenticationFailedException;
+	
+	void logout() throws AuthenticationFailedException;
 
 }

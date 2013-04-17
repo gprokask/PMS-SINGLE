@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -24,11 +25,7 @@ public class AuthenticationService extends RemoteServiceServlet implements IAuth
 	@Override
 	public boolean isAuthenticated() {
 		Principal userPrincipal = getThreadLocalRequest().getUserPrincipal();
-		if (userPrincipal != null) {
-		  return true;
-		} else {
-		  return false;
-		}
+		return userPrincipal != null;
 	}
 
 	@Override
@@ -48,5 +45,21 @@ public class AuthenticationService extends RemoteServiceServlet implements IAuth
 	        }
 		}
 	}
+
+	@Override
+	public void logout() throws AuthenticationFailedException {
+		HttpServletRequest l_request = getThreadLocalRequest();
+        Cookie l_cookie = new Cookie("JSESSIONID", "-1");
+        l_cookie.setMaxAge(0);
+        getThreadLocalResponse().addCookie(l_cookie);
+        try {
+            l_request.getSession().invalidate();
+            l_request.logout();
+        } catch (ServletException e) {
+        	LOGGER.error(e);
+            throw new AuthenticationFailedException();
+        }
+	}
+	
 
 }

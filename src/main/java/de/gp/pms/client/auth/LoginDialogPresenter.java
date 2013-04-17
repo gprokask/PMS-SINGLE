@@ -44,16 +44,13 @@ public class LoginDialogPresenter extends WidgetPresenter<LoginDialogView> {
 			@Override
 			public void onSelect(SelectEvent event) {
 				if (display.validate()) {
-					IAuthServiceAsync authService = IAuthServiceAsync.Util
-							.getInstance();
+					IAuthServiceAsync authService = IAuthServiceAsync.Util.getInstance();
 					authService.login(display.getUseridValue().getValue(),
-							display.getPasswordValue().getValue(),
-							new AsyncCallback<Void>() {
+							display.getPasswordValue().getValue(), new AsyncCallback<Void>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									display.getErrorValue().setText(
-											msg.authenticate_failure());
+									display.getErrorValue().setText(msg.authenticate_failure());
 								}
 
 								@Override

@@ -11,6 +11,8 @@ import de.gp.pms.client.auth.LoginDialogPresenter;
 import de.gp.pms.client.auth.LoginDialogView;
 import de.gp.pms.client.auth.event.LoginEvent;
 import de.gp.pms.client.auth.event.LoginEventHandler;
+import de.gp.pms.client.auth.event.LogoutEvent;
+import de.gp.pms.client.auth.event.LogoutEventHandler;
 import de.gp.pms.shared.auth.IAuthServiceAsync;
 
 public class PmsModuleEntry implements EntryPoint {
@@ -26,6 +28,7 @@ public class PmsModuleEntry implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		addLoginEventHandler();
+		addLogoutEventHandler();
 		authenticateUser();
 	}
 
@@ -48,11 +51,25 @@ public class PmsModuleEntry implements EntryPoint {
 			}
 		});
 	}
+	
+	private void logout() {
+		IAuthServiceAsync authService = IAuthServiceAsync.Util.getInstance();
+		authService.logout(new AsyncCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void p_result) {
+                authenticateUser();
+            }
+
+            @Override
+            public void onFailure(Throwable p_caught) {
+            }
+        });
+    }
 
 	private void showLoginDialog() {
 		LoginDialogView view = new LoginDialogView();
-		LoginDialogPresenter presenter = new LoginDialogPresenter(view,
-				eventBus);
+		LoginDialogPresenter presenter = new LoginDialogPresenter(view, eventBus);
 		presenter.bind();
 		view.show();
 	}
@@ -61,11 +78,22 @@ public class PmsModuleEntry implements EntryPoint {
         eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
 
             @Override
-            public void onLogin(LoginEvent p_event) {
+            public void onLogin(LoginEvent event) {
                initializeView();
             }
         });
     }
+	
+	 private void addLogoutEventHandler() {
+	        eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
+
+	            @Override
+	            public void onLogout(LogoutEvent event) {
+	                destroyApplication();
+	                logout();
+	            }
+	        });
+	    }
 	
 	private void initializeView() {
 		mainView = new MainView();
@@ -73,4 +101,9 @@ public class PmsModuleEntry implements EntryPoint {
         mainViewPresenter.bind();
         RootPanel.get().add(mainView.asWidget());
 	}
+	
+	private void destroyApplication() {
+		mainViewPresenter.unbind();
+        RootPanel.get().remove(mainView);
+    }
 }
